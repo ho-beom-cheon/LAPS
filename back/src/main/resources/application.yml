@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: loan
+  datasource:
+    # 1. Oracle DB 연결 URL
+    # format: jdbc:oracle:thin:@호스트이름:포트번호:서비스이름
+    url: jdbc:oracle:thin:@//localhost:1521/XEPDB1
+    # 2. Oracle DB 사용자 이름
+    username: loan_user
+    # 3. Oracle DB 비밀번호
+    password: loan1234
+    # 4. Oracle JDBC 드라이버 클래스 이름
+    driver-class-name: oracle.jdbc.OracleDriver
+
+  jpa:
+    hibernate:
+      # 5. DDL(테이블 생성) 자동화 설정
+      # create: 애플리케이션 실행 시 테이블 재생성
+      # update: 변경된 부분만 업데이트
+      # none: 아무것도 하지 않음 (운영 환경 추천)
+      ddl-auto: update
+    show-sql: true # 6. 실행되는 SQL 쿼리를 콘솔에 표시
