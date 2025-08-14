@@ -1,6 +1,6 @@
 <template>
   <footer class="main-footer">
-    <p>&copy; 2025 P2P Project. All Rights Reserved.</p>
+    <p>&copy; 2025 P2P Project. All Rights Reserved. <router-link to="/about">about</router-link></p>
   </footer>
 </template>
 
@@ -15,6 +15,6 @@
   text-align: center;
   padding: 1rem;
   bottom: 0;
-  width: 100%;
+  max-width: 1200px; /* 콘텐츠 최대 너비를 1200px로 제한 */
 }
 </style>

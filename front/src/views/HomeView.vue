@@ -105,6 +105,7 @@ h2 {
 .feature-card, .stat-card {
   background-color: #f9f9f9;
   border: 1px solid #ddd;
+  color: #333;
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -116,5 +117,35 @@ h2 {
 .stat-card strong {
   font-size: 2.5rem;
   color: #333;
+}
+
+/* 모바일 반응형 스타일 */
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 3rem 1.5rem;
+  }
+
+  .hero-section h1 {
+    font-size: 2rem;
+  }
+
+  .hero-section p {
+    font-size: 1.1rem;
+  }
+
+  .cta-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .cta-button {
+    width: 80%;
+  }
+
+  .features-grid, .stats-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
