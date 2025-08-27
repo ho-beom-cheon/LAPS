@@ -1,6 +1,6 @@
 <template>
   <footer class="main-footer">
-    <p>&copy; 2025 P2P Project. All Rights Reserved. <router-link to="/about">about</router-link></p>
+    <p>&copy; 2025 LAPS Project. All Rights Reserved. <router-link to="/about">about</router-link></p>
   </footer>
 </template>
 

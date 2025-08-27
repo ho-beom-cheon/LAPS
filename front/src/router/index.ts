@@ -1,14 +1,13 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import Home from '../views/HomeView.vue';
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
+import HomeView from '../views/HomeView.vue';
 import Layout from '../components/Layout.vue';
 
-const routes = [
+const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'Layout',
     component: Layout, // 모든 페이지의 기본 레이아웃으로 설정
     children: [
-      { path: '', name: 'Home', component: Home }, // 메인 페이지는 Layout 안에 렌더링
+      { path: '', name: 'home', component: HomeView }, // 메인 페이지는 Layout 안에 렌더링
       {
         path: 'about',
         name: 'about',
@@ -25,6 +24,16 @@ const routes = [
         component: () => import('../views/LoginView.vue')
       },
       {
+        path: 'mypage',
+        name: 'mypage',
+        component: () => import('../views/MyPageView.vue')
+      },
+      {
+        path: 'register',
+        name: 'register',
+        component: () => import('../views/RegisterView.vue')
+      },
+      {
         path: ':pathMatch(.*)*',
         name: 'NotFound',
         component: () => import('../views/NotFound.vue')
@@ -34,7 +43,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 });
 
