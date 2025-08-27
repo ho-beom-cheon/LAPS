@@ -18,5 +18,7 @@ spring:
       # create: 애플리케이션 실행 시 테이블 재생성
       # update: 변경된 부분만 업데이트
       # none: 아무것도 하지 않음 (운영 환경 추천)
-      ddl-auto: update
+      ddl-auto: update      
     show-sql: true # 6. 실행되는 SQL 쿼리를 콘솔에 표시
+    # JPA/Hibernate settings for Oracle
+    database-platform: org.hibernate.dialect.OracleDialect

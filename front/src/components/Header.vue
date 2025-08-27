@@ -1,7 +1,7 @@
 <template>
   <header class="main-header">
     <div class="header-content">
-      <router-link to="/" class="logo">P2P</router-link>
+      <router-link to="/" class="logo">LAPS</router-link>
       <template v-if="!isErrorPage">
         <button class="mobile-nav-toggle" @click="toggleMenu" :aria-expanded="isMenuOpen" aria-controls="main-nav">
           <span class="sr-only">메뉴</span>
@@ -9,9 +9,9 @@
         </button>
         <nav class="main-nav" :class="{ 'is-open': isMenuOpen }" id="main-nav">
           <router-link to="/loans">대출 상품</router-link>
-          <router-link to="/about">회사 소개</router-link>
           <router-link to="/mypage">마이페이지</router-link>
           <router-link to="/login">로그인</router-link>
+          <router-link to="/register">회원가입</router-link>
         </nav>
       </template>
     </div>

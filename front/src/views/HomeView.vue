@@ -75,6 +75,11 @@
   margin: 0 0.5rem;
   transition: background-color 0.3s;
 }
+.tertiary {
+  background-color: #fff;
+  color: #007bff;
+  border: 1px solid #007bff;
+}
 .primary {
   background-color: #007bff;
   color: white;
@@ -138,6 +143,10 @@ h2 {
     flex-direction: column;
     gap: 1rem;
     align-items: center;
+  }
+
+  .cta-button {
+    margin: 0;
   }
 
   .cta-button {
