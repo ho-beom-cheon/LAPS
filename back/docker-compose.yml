@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # Spring Boot 애플리케이션 서비스
+  app:
+    build: . # 현재 디렉터리의 Dockerfile을 사용하여 이미지 빌드
+    container_name: laps-app
+    ports:
+      - "8080:8080" # 호스트의 8080 포트를 컨테이너의 8080 포트와 연결
+    environment:
+      # Spring 프로필을 'prod'로 활성화
+      - SPRING_PROFILES_ACTIVE=prod
+      # Docker Compose 네트워크 내의 DB 서비스(db)를 바라보도록 URL 설정
+      # 이 설정은 application-prod.yml의 DB URL을 덮어씁니다.
+      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@db:1521/XEPDB1
+      # 운영용 DB 사용자 이름 설정
+      - SPRING_DATASOURCE_USERNAME=prod_user
+      # .env 파일에서 Jasypt 비밀키를 읽어옴
+      - JASYPT_ENCRYPTOR_PASSWORD=${JASYPT_SECRET_KEY}
+      # Jasypt로 암호화된 DB 비밀번호
+      - SPRING_DATASOURCE_PASSWORD=ENC(p+PJPCqqZZYmPYuw7uk0Heuv+sLmOva0)
+    depends_on:
+      db:
+        condition: service_healthy # db 서비스가 healthy 상태가 된 후 app 서비스 시작
+    networks:
+      - laps-network
+
+  # Oracle 데이터베이스 서비스
+  db:
+    image: gvenzl/oracle-xe:21-slim-faststart # Oracle XE 21c 이미지 사용
+    container_name: laps-db
+    ports:
+      - "1521:1521" # 호스트와 컨테이너의 DB 포트 연결 (외부 DB 툴로 접속 시 유용)
+    environment:
+      # .env 파일에서 Oracle 비밀번호를 읽어옴
+      - ORACLE_PASSWORD=${ORACLE_PROD_PASSWORD}
+      # 컨테이너 시작 시 자동으로 생성할 유저 및 스키마 설정
+      - APP_USER=prod_user
+      - APP_USER_PASSWORD=${ORACLE_PROD_PASSWORD}
+    volumes:
+      - oracle-data:/opt/oracle/oradata # 데이터베이스 데이터 영속성을 위한 볼륨
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - laps-network
+
+# Docker 네트워크 정의
+networks:
+  laps-network:
+    driver: bridge
+
+# Docker 볼륨 정의
+volumes:
+  oracle-data:

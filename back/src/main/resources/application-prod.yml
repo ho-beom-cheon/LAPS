@@ -1,0 +1,11 @@
+# 운영(production) 환경 설정
+spring:
+  datasource:
+    # 운영용 Oracle DB 연결 URL
+    url: jdbc:oracle:thin:@168.107.27.251:1521/XEPDB1
+    username: prod_user
+    password: ENC(p+PJPCqqZZYmPYuw7uk0Heuv+sLmOva0) # Jasypt로 암호화된 비밀번호
+  jpa:
+    hibernate:
+      ddl-auto: none # 운영 시에는 스키마 자동 변경 비활성화 (안정성)
+    show-sql: false # 성능을 위해 SQL 쿼리 로그 비활성화
