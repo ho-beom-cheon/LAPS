@@ -2,7 +2,7 @@
   <div class="register-container">
     <div class="register-form-wrapper">
       <h2>회원가입</h2>
-      <p>LAPS에 오신 것을 환영합니다. 정보를 입력해주세요.</p>
+      <p>LAPS에 오신 것을 환영합니다.</p> <p>정보를 입력해주세요.</p>
       <form @submit.prevent="handleSubmit">
         <div class="form-group">
           <label for="username">아이디</label>
@@ -43,6 +43,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import axios from 'axios';
 
 const router = useRouter();
 
@@ -68,20 +69,16 @@ const checkUsernameDuplication = async () => {
   }
 
   try {
-    const response = await fetch(`/api/members/check-username?username=${encodeURIComponent(username)}`);
-    if (!response.ok) {
-      throw new Error('서버와 통신 중 오류가 발생했습니다.');
-    }
-    const data = await response.json();
-    const isTaken = !data.isAvailable;
+    const response = await axios.get(`/api/members/check-username`, { params: { username } });
+    const isAvailable = response.data.available;
 
     isUsernameChecked.value = true;
-    if (isTaken) {
-      isUsernameAvailable.value = false;
-      usernameCheckMessage.value = '이미 사용 중인 아이디입니다.';
-    } else {
+    if (isAvailable) {
       isUsernameAvailable.value = true;
       usernameCheckMessage.value = '사용 가능한 아이디입니다.';
+    } else {
+      isUsernameAvailable.value = false;
+      usernameCheckMessage.value = '이미 사용 중인 아이디입니다.';
     }
   } catch (error) {
     console.error('Error checking username:', error);
@@ -99,7 +96,7 @@ const resetUsernameCheck = () => {
   }
 };
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
   if (!isUsernameChecked.value || !isUsernameAvailable.value) {
     alert('아이디 중복 확인을 해주세요.');
     return;
@@ -109,13 +106,25 @@ const handleSubmit = () => {
     alert('비밀번호가 일치하지 않습니다.');
     return;
   }
-  
-  // TODO: 백엔드 API 회원가입 요청 로직 추가
-  console.log('Form Data Submitted:', formData.value);
-  alert('회원가입이 요청되었습니다. (콘솔에서 데이터 확인)');
-  
-  // 회원가입 성공 후 로그인 페이지나 홈으로 이동
-  // router.push('/login'); 
+
+  try {
+    const payload = {
+      username: formData.value.username,
+      password: formData.value.password,
+      name: formData.value.name,
+      email: formData.value.email,
+      phone: formData.value.phone,
+    };
+    await axios.post('/api/members/signup', payload);
+    alert('회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.');
+    router.push('/login');
+  } catch (error) {
+    console.error('회원가입 실패:', error);
+    const errorMessage = axios.isAxiosError(error) && error.response?.data?.message
+      ? error.response.data.message
+      : '회원가입 중 오류가 발생했습니다.';
+    alert(`회원가입 실패: ${errorMessage}`);
+  }
 };
 </script>
 
@@ -126,7 +135,6 @@ const handleSubmit = () => {
   align-items: center;
   min-height: 100vh;
   background-color: #f4f7f6;
-  padding: 2rem;
 }
 
 .register-form-wrapper {
@@ -147,7 +155,7 @@ h2 {
 
 .register-form-wrapper > p {
   color: #666;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .form-group {
