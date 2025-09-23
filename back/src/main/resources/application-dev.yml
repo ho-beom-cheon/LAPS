@@ -2,7 +2,7 @@
 spring:
   datasource:
     # 개발용 Oracle DB 연결 URL
-    url: jdbc:oracle:thin:@//localhost:1521/XEPDB1
+    url: jdbc:oracle:thin:@//localhost:1521/XEPDB2
     username: loan_user
     password: loan1234
   jpa:
